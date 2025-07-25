@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "670271177322",
+    "firebase_url": "https://yoga-app-986b8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "yoga-app-986b8",
+    "storage_bucket": "yoga-app-986b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670271177322:android:668e50779ab1d4843e4013",
+        "android_client_info": {
+          "package_name": "com.example.flutter_yoga"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyf1vBGyWKfLjHjYLpWyrqiIYe8nqkJug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670271177322:android:c485bacf87ac1b3a3e4013",
+        "android_client_info": {
+          "package_name": "com.example.yoga"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyf1vBGyWKfLjHjYLpWyrqiIYe8nqkJug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
