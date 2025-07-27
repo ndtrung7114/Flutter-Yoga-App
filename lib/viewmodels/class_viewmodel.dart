@@ -27,6 +27,41 @@ class ClassViewModel {
     });
   }
 
+  // Enhanced search method for instances with multiple criteria
+  Stream<List<Instance>> searchInstances({
+    String nameQuery = '',
+    String teacherQuery = '',
+    String dateQuery = '',
+    String timeQuery = '',
+  }) {
+    return _firestore.collection('instances').snapshots().map((snapshot) {
+      return snapshot.docs
+          .map((doc) => Instance.fromFirestore(doc.data(), doc.id))
+          .where((instance) {
+            final matchesName =
+                nameQuery.isEmpty ||
+                instance.name.toLowerCase().contains(nameQuery.toLowerCase());
+
+            final matchesTeacher =
+                teacherQuery.isEmpty ||
+                instance.teacher.toLowerCase().contains(
+                  teacherQuery.toLowerCase(),
+                );
+
+            final matchesDate =
+                dateQuery.isEmpty ||
+                instance.date.toLowerCase().contains(dateQuery.toLowerCase());
+
+            final matchesTime =
+                timeQuery.isEmpty ||
+                instance.date.toLowerCase().contains(timeQuery.toLowerCase());
+
+            return matchesName && matchesTeacher && matchesDate && matchesTime;
+          })
+          .toList();
+    });
+  }
+
   Stream<List<Instance>> getInstancesByCourse(int courseId) {
     return _firestore
         .collection('instances')

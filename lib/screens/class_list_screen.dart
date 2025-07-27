@@ -12,12 +12,10 @@ class ClassListScreen extends StatefulWidget {
 
 class _ClassListScreenState extends State<ClassListScreen> {
   final ClassViewModel _viewModel = ClassViewModel();
-  final TextEditingController _searchController = TextEditingController();
   String _selectedCourseType = 'All'; // Filter state
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -54,15 +52,40 @@ class _ClassListScreenState extends State<ClassListScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              // Search TextField
-              TextField(
-                controller: _searchController,
-                decoration: const InputDecoration(
-                  labelText: 'Search courses by name or type',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.search),
+              // Search replacement notice
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.blue[50],
+                  border: Border.all(color: Colors.blue[200]!),
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                onChanged: (value) => setState(() {}),
+                child: Row(
+                  children: [
+                    Icon(Icons.info_outline, color: Colors.blue[700]),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Search for Class Instances',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[800],
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Use the search icon in the top bar to find specific class instances by date, time, teacher, or name.',
+                            style: TextStyle(color: Colors.blue[700]),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.search, color: Colors.blue[700]),
+                  ],
+                ),
               ),
               const SizedBox(height: 8),
               // Filter Row
@@ -126,8 +149,7 @@ class _ClassListScreenState extends State<ClassListScreen> {
                 ],
               ),
               // Active filters display
-              if (_selectedCourseType != 'All' ||
-                  _searchController.text.isNotEmpty)
+              if (_selectedCourseType != 'All')
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(
@@ -137,16 +159,6 @@ class _ClassListScreenState extends State<ClassListScreen> {
                   child: Wrap(
                     spacing: 8,
                     children: [
-                      if (_searchController.text.isNotEmpty)
-                        Chip(
-                          label: Text('Search: "${_searchController.text}"'),
-                          onDeleted: () {
-                            setState(() {
-                              _searchController.clear();
-                            });
-                          },
-                          deleteIcon: const Icon(Icons.close, size: 16),
-                        ),
                       if (_selectedCourseType != 'All')
                         Chip(
                           avatar: CircleAvatar(
@@ -181,25 +193,17 @@ class _ClassListScreenState extends State<ClassListScreen> {
               }
               final courses = snapshot.data ?? [];
 
-              // Filter courses based on search and type filter
+              // Filter courses based on type filter only
               final filteredCourses = courses.where((course) {
-                final searchTerm = _searchController.text.toLowerCase();
-                final matchesSearch =
-                    searchTerm.isEmpty ||
-                    course.name.toLowerCase().contains(searchTerm) ||
-                    course.type.toLowerCase().contains(searchTerm);
-
                 final matchesType =
                     _selectedCourseType == 'All' ||
                     course.type == _selectedCourseType;
 
-                return matchesSearch && matchesType;
+                return matchesType;
               }).toList();
 
               if (filteredCourses.isEmpty) {
-                final hasFilter =
-                    _selectedCourseType != 'All' ||
-                    _searchController.text.isNotEmpty;
+                final hasFilter = _selectedCourseType != 'All';
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -212,7 +216,7 @@ class _ClassListScreenState extends State<ClassListScreen> {
                       const SizedBox(height: 16),
                       Text(
                         hasFilter
-                            ? 'No courses match your filters'
+                            ? 'No courses match your filter'
                             : 'No courses found',
                         style: const TextStyle(
                           fontSize: 18,
@@ -225,10 +229,9 @@ class _ClassListScreenState extends State<ClassListScreen> {
                           onPressed: () {
                             setState(() {
                               _selectedCourseType = 'All';
-                              _searchController.clear();
                             });
                           },
-                          child: const Text('Clear Filters'),
+                          child: const Text('Clear Filter'),
                         ),
                       ],
                     ],

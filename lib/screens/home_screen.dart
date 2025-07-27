@@ -7,6 +7,7 @@ import 'class_list_screen.dart';
 import 'cart_screen.dart';
 import 'bookings_screen.dart';
 import 'profile_screen.dart';
+import 'instance_search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,6 +27,15 @@ class HomeScreen extends StatelessWidget {
             appBar: AppBar(
               title: const Text('Yoga Booking App'),
               actions: [
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const InstanceSearchScreen(),
+                    ),
+                  ),
+                ),
                 IconButton(
                   icon: const Icon(Icons.shopping_cart),
                   onPressed: () => Navigator.push(
